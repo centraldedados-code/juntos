@@ -1,829 +1,496 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#092040">
-  <title>ESJ — Economia Solidária - Juntos! | SMPC</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-
-  <script src="config.js"></script>
-
-  <style>
-    :root {
-      --azul-principal: #092040;
-      --ciano: #00B7D7;
-      --amarelo: #ECC203;
-      --cinza-claro: #EFF1F3;
-      --azul-escuro: #021738;
-      --branco: #FFFFFF;
-      --texto: #243447;
-      --texto-suave: #617181;
-      --borda: #D9E1E7;
-      --perigo: #A53B3B;
-      --perigo-bg: #FBE9E9;
-      --aviso: #8B6500;
-      --aviso-bg: #FFF7D6;
-      --sucesso: #1F6A4B;
-      --sucesso-bg: #E6F4EC;
-      --sombra: 0 12px 30px rgba(2, 23, 56, .08);
-      --raio: 16px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      background: var(--cinza-claro);
-      color: var(--texto);
-      font-family: "Open Sans", Arial, sans-serif;
-      font-weight: 400;
-    }
-
-    h1, h2, h3, h4, .titulo-montserrat {
-      font-family: "Montserrat", Arial, sans-serif;
-      color: var(--azul-principal);
-      margin-top: 0;
-    }
-
-    h1 { font-weight: 700; }
-    h2, h3, h4 { font-weight: 600; }
-
-    table, th, td {
-      font-family: "Open Sans", Arial, sans-serif;
-    }
-
-    th { font-weight: 600; }
-
-    .hidden { display: none !important; }
-
-    .login {
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      display: grid;
-      place-items: center;
-      padding: 22px;
-      background:
-        radial-gradient(circle at 15% 10%, rgba(0,183,215,.24), transparent 32%),
-        radial-gradient(circle at 85% 90%, rgba(236,194,3,.14), transparent 28%),
-        linear-gradient(145deg, var(--azul-escuro), var(--azul-principal));
-    }
-
-    .login-card {
-      width: min(450px, 100%);
-      background: var(--branco);
-      border-radius: 22px;
-      box-shadow: 0 28px 80px rgba(0,0,0,.35);
-      padding: 30px;
-      border-top: 6px solid var(--ciano);
-    }
-
-    .login-logo {
-      display: block;
-      width: 170px;
-      max-height: 120px;
-      object-fit: contain;
-      margin: 0 auto 18px;
-    }
-
-    .login-card h1 {
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 6px;
-    }
-
-    .login-card p {
-      text-align: center;
-      color: var(--texto-suave);
-      margin: 0 0 20px;
-      line-height: 1.5;
-    }
-
-    .login-card input {
-      width: 100%;
-      border: 1px solid var(--borda);
-      border-radius: 10px;
-      padding: 13px 14px;
-      font: 400 15px "Open Sans", Arial, sans-serif;
-      outline: none;
-      transition: .2s ease;
-      background: var(--branco);
-    }
-
-    .login-card input:focus {
-      border-color: var(--ciano);
-      box-shadow: 0 0 0 3px rgba(0,183,215,.14);
-    }
-
-    .btn-principal {
-      border: 0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      cursor: pointer;
-      color: var(--branco);
-      background: var(--azul-principal);
-      font-family: "Montserrat", Arial, sans-serif;
-      font-weight: 600;
-      transition: .2s ease;
-    }
-
-    .btn-principal:hover {
-      background: var(--azul-escuro);
-      transform: translateY(-1px);
-    }
-
-    .login-card .btn-principal {
-      width: 100%;
-      margin-top: 10px;
-      border-bottom: 4px solid var(--amarelo);
-    }
-
-    .erro {
-      min-height: 18px;
-      margin-top: 9px;
-      color: var(--perigo);
-      font-size: 12px;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .login-nota {
-      margin-top: 10px;
-      font-size: 11px;
-      text-align: center;
-      color: var(--texto-suave);
-    }
-
-    header {
-      color: var(--branco);
-      background: linear-gradient(135deg, var(--azul-escuro), var(--azul-principal));
-      border-bottom: 5px solid var(--ciano);
-      box-shadow: var(--sombra);
-    }
-
-    .header-wrap {
-      max-width: 1480px;
-      margin: 0 auto;
-      padding: 24px 24px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 22px;
-    }
-
-    .identidade {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      min-width: 0;
-    }
-
-    .header-logo-box {
-      background: var(--branco);
-      border-radius: 14px;
-      padding: 8px 12px;
-      flex: 0 0 auto;
-      box-shadow: 0 5px 18px rgba(0,0,0,.16);
-    }
-
-    .header-logo {
-      width: 125px;
-      height: 70px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .brand h1 {
-      color: var(--branco);
-      margin: 0;
-      font-size: clamp(22px, 2.4vw, 34px);
-      line-height: 1.15;
-    }
-
-    .brand p {
-      margin: 7px 0 0;
-      color: rgba(255,255,255,.83);
-      font-size: 14px;
-    }
-
-    .agent-badge {
-      flex: 0 0 auto;
-      padding: 8px 12px;
-      border: 1px solid rgba(255,255,255,.28);
-      background: rgba(255,255,255,.1);
-      border-radius: 999px;
-      color: var(--branco);
-      font: 600 12px "Montserrat", Arial, sans-serif;
-      white-space: nowrap;
-    }
-
-    main {
-      width: min(1480px, calc(100% - 32px));
-      margin: 22px auto 0;
-    }
-
-    .aviso-geral {
-      background: var(--branco);
-      border-left: 5px solid var(--amarelo);
-      border-radius: 12px;
-      padding: 13px 15px;
-      margin-bottom: 16px;
-      box-shadow: var(--sombra);
-      line-height: 1.5;
-    }
-
-    .aviso-geral strong {
-      color: var(--azul-principal);
-      font-family: "Montserrat", Arial, sans-serif;
-    }
-
-    .painel-card,
-    .toolbar,
-    .turma-card,
-    .kpi {
-      background: var(--branco);
-      border: 1px solid var(--borda);
-      border-radius: var(--raio);
-      box-shadow: var(--sombra);
-    }
-
-    .painel-card {
-      padding: 20px;
-      margin-bottom: 16px;
-      border-top: 4px solid var(--ciano);
-    }
-
-    .painel-card h2 {
-      margin-bottom: 14px;
-      font-size: 20px;
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .kv {
-      border: 1px solid var(--borda);
-      border-radius: 10px;
-      padding: 10px 11px;
-      background: #F9FBFC;
-      min-width: 0;
-    }
-
-    .kv b {
-      display: block;
-      color: var(--azul-principal);
-      font: 600 11px "Open Sans", Arial, sans-serif;
-      margin-bottom: 4px;
-    }
-
-    .kpis {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 11px;
-      margin-bottom: 16px;
-    }
-
-    .kpi {
-      padding: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .kpi::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 4px;
-      background: var(--ciano);
-    }
-
-    .kpi:nth-child(3)::before,
-    .kpi:nth-child(4)::before,
-    .kpi:nth-child(5)::before {
-      background: var(--amarelo);
-    }
-
-    .kpi-numero {
-      color: var(--azul-principal);
-      font: 700 29px "Montserrat", Arial, sans-serif;
-    }
-
-    .kpi-label {
-      color: var(--texto-suave);
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    .toolbar {
-      padding: 12px;
-      display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .toolbar input,
-    .toolbar select {
-      background: var(--branco);
-      border: 1px solid var(--borda);
-      border-radius: 9px;
-      padding: 10px 11px;
-      font: 400 14px "Open Sans", Arial, sans-serif;
-      color: var(--texto);
-      outline: none;
-    }
-
-    .toolbar input {
-      flex: 1;
-      min-width: 250px;
-    }
-
-    .toolbar input:focus,
-    .toolbar select:focus {
-      border-color: var(--ciano);
-      box-shadow: 0 0 0 3px rgba(0,183,215,.11);
-    }
-
-    .turmas-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .turma-card {
-      overflow: hidden;
-      border-top: 4px solid var(--azul-principal);
-    }
-
-    .turma-head {
-      padding: 16px 17px 11px;
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: flex-start;
-    }
-
-    .turma-head h3 {
-      font-size: 17px;
-      line-height: 1.35;
-      margin: 0;
-    }
-
-    .sub {
-      margin-top: 5px;
-      color: var(--texto-suave);
-      font-size: 12px;
-    }
-
-    .status {
-      max-width: 220px;
-      padding: 6px 9px;
-      border-radius: 999px;
-      color: var(--aviso);
-      background: var(--aviso-bg);
-      font: 600 11px "Open Sans", Arial, sans-serif;
-      text-align: center;
-      line-height: 1.25;
-    }
-
-    .status.danger {
-      color: var(--perigo);
-      background: var(--perigo-bg);
-    }
-
-    .status.good {
-      color: var(--sucesso);
-      background: var(--sucesso-bg);
-    }
-
-    .turma-body {
-      padding: 4px 17px 17px;
-    }
-
-    .facts {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 7px;
-    }
-
-    .fact {
-      background: #F8FAFB;
-      border: 1px solid #E6ECEF;
-      border-radius: 9px;
-      padding: 9px;
-      min-width: 0;
-    }
-
-    .fact b {
-      display: block;
-      color: var(--azul-principal);
-      font-size: 10px;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 11px 0;
-    }
-
-    .chip {
-      padding: 5px 8px;
-      border-radius: 999px;
-      color: var(--perigo);
-      background: var(--perigo-bg);
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .chip.pending {
-      color: var(--aviso);
-      background: var(--aviso-bg);
-    }
-
-    .agent-read {
-      margin: 10px 0 12px;
-      padding: 12px 13px;
-      background: rgba(0,183,215,.07);
-      border-left: 4px solid var(--ciano);
-      border-radius: 9px;
-      line-height: 1.5;
-      font-size: 13px;
-    }
-
-    .agent-read b {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--azul-principal);
-      font-family: "Montserrat", Arial, sans-serif;
-      font-weight: 600;
-    }
-
-    .evidencias h4 {
-      margin: 0 0 8px;
-      font-size: 14px;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .linkbtn,
-    .missing {
-      display: inline-block;
-      border-radius: 8px;
-      padding: 7px 9px;
-      font-size: 12px;
-    }
-
-    .linkbtn {
-      text-decoration: none;
-      color: var(--azul-principal);
-      background: rgba(0,183,215,.08);
-      border: 1px solid rgba(0,183,215,.32);
-      font-weight: 600;
-      transition: .15s ease;
-    }
-
-    .linkbtn:hover {
-      background: var(--ciano);
-      color: var(--azul-escuro);
-      border-color: var(--ciano);
-    }
-
-    .missing {
-      color: #8794A0;
-      background: #F7F8F9;
-      border: 1px dashed #CAD2D8;
-    }
-
-    .loader,
-    .empty {
-      text-align: center;
-      color: var(--texto-suave);
-      padding: 38px 20px;
-    }
-
-    footer {
-      margin-top: 28px;
-      background: var(--azul-escuro);
-      color: rgba(255,255,255,.8);
-      border-top: 4px solid var(--amarelo);
-    }
-
-    .footer-wrap {
-      width: min(1480px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 20px 0;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      font-size: 11px;
-    }
-
-    .footer-logo {
-      width: 86px;
-      height: 48px;
-      object-fit: contain;
-      background: var(--branco);
-      border-radius: 8px;
-      padding: 4px 7px;
-    }
-
-    @media (max-width: 1040px) {
-      .turmas-grid { grid-template-columns: 1fr; }
-      .project-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .kpis { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
-
-    @media (max-width: 680px) {
-      .header-wrap { padding: 18px 14px; align-items: flex-start; }
-      .identidade { align-items: flex-start; }
-      .header-logo-box { padding: 5px 7px; }
-      .header-logo { width: 82px; height: 52px; }
-      .agent-badge { display: none; }
-      main { width: min(100% - 20px, 1480px); }
-      .project-grid, .facts, .kpis { grid-template-columns: 1fr 1fr; }
-      .turma-head { flex-direction: column; }
-      .status { max-width: 100%; text-align: left; }
-      .footer-wrap { width: min(100% - 20px, 1480px); }
-    }
-
-    @media (max-width: 430px) {
-      .project-grid, .facts, .kpis { grid-template-columns: 1fr; }
-      .header-logo { width: 72px; }
-      .brand p { font-size: 12px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#092040">
+<title>Juntos SP | SMPC — Index de Evidências</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap');
+
+:root{
+  --az:#092040; --ci:#00B7D7; --am:#ECC203; --cz:#EFF1F3; --es:#021738; --br:#FFFFFF;
+  --gv:#1A6B3C; --gvb:#ebf7eb; --aw:#7A4F00; --awb:#fff8e0; --rd:#8B1A1A; --rdb:#fce8e8;
+  --bd:#dde4ee; --mut:#718096; --txt:#2f3b48;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Open Sans',Arial,sans-serif;background:var(--cz);color:var(--txt);min-height:100vh}
+h1,h2,h3,h4,button{font-family:'Montserrat',Arial,sans-serif}
+a{color:inherit}
+
+/* LOGIN — padrão JJSE */
+#pwd{position:fixed;inset:0;z-index:9999;background:var(--az);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+#pwd.off{display:none}
+.pbox{background:var(--br);border-radius:16px;padding:36px 40px;max-width:430px;width:100%;text-align:center;box-shadow:0 22px 60px rgba(0,0,0,.28)}
+.plogo-main{height:auto;max-height:88px;max-width:250px;object-fit:contain;display:block;margin:0 auto 22px}
+.psub{color:var(--az);font-size:16px;font-weight:700;line-height:1.35;margin-bottom:7px;font-family:'Montserrat',sans-serif}
+.pkicker{color:var(--am);font-size:10.5px;font-weight:700;letter-spacing:1.25px;margin-bottom:8px;text-transform:uppercase;font-family:'Montserrat',sans-serif}
+.phint{font-size:12px;color:#8390a0;margin-bottom:20px;line-height:1.5}
+.pin{width:100%;padding:12px 16px;border:2px solid var(--bd);border-radius:10px;font-size:15px;letter-spacing:2px;color:var(--az);outline:none;margin-bottom:12px}
+.pin:focus{border-color:var(--ci)}
+.pbtn{width:100%;padding:13px;background:var(--az);color:var(--am);border:none;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer}
+.pbtn:hover{background:var(--ci);color:var(--br)}
+.perr{color:#cc0000;font-size:12px;margin-top:8px;min-height:18px}
+.pfoot{font-size:10px;color:rgba(255,255,255,.58);margin-top:18px;text-align:center;line-height:1.5}
+
+/* LOADER */
+#ld{display:none;position:fixed;inset:0;z-index:500;background:var(--cz);align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#ld.on{display:flex}
+.spin{width:48px;height:48px;border:4px solid var(--ci);border-top-color:var(--am);border-radius:50%;animation:giro .8s linear infinite}
+@keyframes giro{to{transform:rotate(360deg)}}
+.ltxt{font-family:'Montserrat',sans-serif;font-weight:700;color:var(--az);font-size:14px}
+#app{display:none}
+#app.on{display:block}
+
+/* CABEÇALHO */
+.hdr{background:var(--az);position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.hdri{max-width:1220px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;min-height:68px;padding:8px 24px;gap:18px}
+.brandwrap{display:flex;align-items:center;gap:14px;min-width:0}
+.hlogo{height:43px;max-width:150px;object-fit:contain;background:var(--br);border-radius:8px;padding:5px 10px}
+.hdiv{width:1px;height:34px;background:rgba(255,255,255,.2)}
+.htit{color:var(--am);font-size:15px;font-weight:700;letter-spacing:.5px;font-family:'Montserrat',sans-serif}
+.hsub{color:rgba(255,255,255,.62);font-size:10.5px;margin-top:2px}
+.hnav{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.nbtn{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.65);font-size:10.5px;font-weight:700;letter-spacing:.45px;padding:8px 11px;border-radius:8px;text-transform:uppercase}
+.nbtn:hover{color:var(--br);background:rgba(255,255,255,.1)}
+.nbtn.on{color:var(--am);background:rgba(236,194,3,.15)}
+
+/* BASE */
+.wrap{max-width:1220px;margin:0 auto;padding:24px 16px}
+.vw{display:none}.vw.on{display:block}
+.st{font-size:11px;font-weight:700;color:var(--az);text-transform:uppercase;letter-spacing:1.4px;margin:22px 0 12px;padding-left:10px;border-left:4px solid var(--ci);font-family:'Montserrat',sans-serif}
+.card{background:var(--br);border:1.5px solid var(--bd);border-radius:12px;padding:16px 18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.notice{background:#e0f7fb;border:1px solid #b8ecf5;border-radius:10px;padding:13px 16px;font-size:12px;color:#176377;line-height:1.55}
+
+/* FICHA */
+.ficha-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px 26px}
+.ficha-rot{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8592A3;margin-bottom:4px}
+.ficha-val{font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;color:var(--az);overflow-wrap:anywhere;line-height:1.45}
+.ficha-span{grid-column:1/-1}
+
+/* OPERAÇÃO */
+.diag-top{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:12px}
+.diag-main{background:linear-gradient(135deg,#092040 0%,#0d3768 100%);border-radius:12px;padding:18px 20px;color:#fff}
+.diag-main .n{font:700 34px Montserrat;color:var(--am)}
+.diag-main .t{font:700 12px Montserrat;margin-top:2px}
+.diag-main .s{font-size:10.5px;color:rgba(255,255,255,.68);margin-top:6px;line-height:1.45}
+.diag-card{background:#fff;border:1.5px solid var(--bd);border-radius:12px;padding:16px 18px}
+.diag-card .n{font:700 22px Montserrat;color:var(--ci)}
+.diag-card .t{font:700 10.5px Montserrat;color:var(--az);margin-top:3px;text-transform:uppercase;letter-spacing:.35px}
+.diag-card .s{font-size:10.5px;color:#718096;margin-top:6px;line-height:1.45}
+
+/* KPI */
+.kpi{background:var(--az);border-radius:12px;padding:18px;text-align:center}
+.knum{color:var(--am);font-size:26px;font-weight:700;font-family:'Montserrat',sans-serif}
+.klab{color:rgba(255,255,255,.68);font-size:11px;margin-top:4px}
+
+/* BARRAS */
+.sbw{background:#dde4ee;border-radius:999px;overflow:hidden}.sb{border-radius:999px;transition:width 1s ease;height:100%}
+.shi{background:var(--gv)} .smid{background:var(--ci)} .slow{background:#c9940a} .scrit{background:#cc2222}
+
+/* BADGES */
+.badge{display:inline-block;font-size:9.5px;font-weight:700;padding:4px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px;font-family:'Montserrat',sans-serif;line-height:1.2}
+.bCo{background:var(--gvb);color:var(--gv)}
+.bIn{background:var(--awb);color:var(--aw)}
+.bAl{background:#ffe8cc;color:#8B4A00}
+.bEr{background:var(--rdb);color:var(--rd)}
+.bPe{background:#edf2f7;color:#5b6572}
+.bAn{background:#e0f7fb;color:#176377}
+
+/* ALERTAS */
+.alerta-doc{background:#fff;border:2px solid var(--am);border-left:6px solid var(--am);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.alerta-doc.ok{border-color:#cfe8d7;border-left-color:var(--gv);background:#f6fbf7}
+.alerta-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.alerta-title{font:700 13px Montserrat;color:var(--az);text-transform:uppercase;letter-spacing:.5px}
+.alerta-count{font:700 24px Montserrat;color:#8B5A00}
+.alerta-help{font-size:11px;color:#657180;line-height:1.55;margin-top:4px}
+.alerta-list{margin-top:12px;display:grid;gap:8px}
+.alerta-item{background:#fffaf0;border:1px solid #f0dfaa;border-radius:9px;padding:10px 12px}
+.alerta-item strong{font:700 11px Montserrat;color:var(--az)}
+.alerta-meta{font-size:10.5px;color:#6f7884;margin-top:3px;line-height:1.45}
+.alerta-regra{margin-top:10px;font-size:10.5px;color:#6a4b00;font-weight:600;line-height:1.5}
+
+/* FILTROS */
+.fbar,.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.fbtn{background:#fff;border:1.5px solid var(--bd);color:var(--az);font-size:10px;font-weight:700;padding:7px 13px;border-radius:20px;cursor:pointer;text-transform:uppercase}
+.fbtn.on,.fbtn:hover{background:var(--az);color:var(--am);border-color:var(--az)}
+.search{flex:1;min-width:220px;padding:9px 12px;border:1.5px solid var(--bd);border-radius:9px;font:12px 'Open Sans',sans-serif;outline:none;background:#fff}
+.search:focus{border-color:var(--ci)}
+
+/* ATIVIDADES — cards didáticos */
+.activity-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.activity-card{background:#fff;border:1.5px solid var(--bd);border-left:4px solid var(--ci);border-radius:14px;padding:16px 17px;min-height:285px;display:flex;flex-direction:column}
+.activity-card.st-ok{border-left-color:var(--gv)}
+.activity-card.st-insuficiente{border-left-color:#c9940a}
+.activity-card.st-alerta{border-left-color:#E07B00}
+.activity-card.st-erro{border-left-color:#cc2222}
+.activity-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.activity-card-kicker{font:700 9.5px Montserrat;color:var(--ci);text-transform:uppercase;letter-spacing:.55px;margin-bottom:4px}
+.activity-card-title{font:700 13px Montserrat;color:var(--az);line-height:1.4}
+.activity-card-sub{font-size:10.5px;color:#68717d;line-height:1.45;margin-top:4px}
+.activity-card-evidence{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
+.activity-evidence-item{background:#f6f8fb;border:1px solid #e4e9ef;border-radius:9px;padding:8px 6px;text-align:center}
+.activity-evidence-item .n{font:700 16px Montserrat;color:var(--az)}
+.activity-evidence-item .l{font-size:8.5px;color:#75808c;text-transform:uppercase;letter-spacing:.25px;margin-top:2px;line-height:1.25}
+.activity-card-total{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:10px;padding:9px 10px;border-radius:9px;background:#eaf8fb;font-size:10.5px;color:#176377}
+.activity-card-reading{margin-top:10px;border-left:3px solid var(--ci);background:#f7fafc;border-radius:8px;padding:9px 10px;font-size:10.5px;color:#596575;line-height:1.5}
+.activity-card-reading strong{color:var(--az)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.chip{font:700 8.5px Montserrat;border-radius:999px;padding:4px 7px;background:#fff5d7;color:#765600}
+.chip.alert{background:#ffe8cc;color:#8B4A00}
+
+/* EVIDÊNCIAS DRIVE */
+.evid-hero{background:linear-gradient(135deg,#092040 0%,#0c315f 100%);border-radius:14px;padding:20px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#fff;box-shadow:0 8px 24px rgba(9,32,64,.14)}
+.evid-hero-title{font:700 18px Montserrat;color:var(--am);letter-spacing:.7px}
+.evid-hero-sub{font-size:11.5px;color:rgba(255,255,255,.72);margin-top:5px;line-height:1.5}
+.evid-hero-badge{background:var(--am);color:var(--az);font:700 10px Montserrat;padding:7px 12px;border-radius:999px;white-space:nowrap}
+.evid-kpis{margin-top:12px}
+.evid-kpi{background:#fff;border:1.5px solid var(--bd);border-radius:12px;padding:15px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.evid-kpi .num{font:700 25px Montserrat;color:var(--ci)}
+.evid-kpi .lab{font-size:10.5px;color:#6b7480;line-height:1.35;text-align:right}
+.drive-terr{background:#fff;border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.drive-terr-head{background:var(--az);color:#fff;padding:14px 17px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.drive-terr-title{font:700 13px Montserrat}.drive-terr-meta{font-size:10px;color:var(--am);font-weight:700}
+.drive-comp{padding:14px 16px;border-top:1px solid #edf0f4}.drive-comp:first-child{border-top:none}
+.drive-comp-title{font:700 11px Montserrat;color:var(--az);border-left:3px solid var(--ci);padding-left:8px;margin-bottom:10px}
+.drive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.drive-card{border:1px solid #e0e6ee;border-left:4px solid var(--ci);border-radius:11px;padding:13px;background:#fbfcfd;display:flex;flex-direction:column;min-height:245px}
+.drive-card.pending{border-left-color:#c9940a;background:#fffaf0}
+.drive-card-title{font:700 11px Montserrat;color:var(--az);line-height:1.45;margin-bottom:7px}
+.drive-card-meta{font-size:10px;color:#737d88;line-height:1.5;margin-bottom:9px}
+.drive-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.evchip{font:700 9px Montserrat;border-radius:999px;padding:4px 7px;background:#edf2f7;color:#53606f}
+.evchip.photo{background:#fff5bf;color:#765d00}.evchip.doc{background:#e0f7fb;color:#176377}.evchip.ok{background:var(--gvb);color:var(--gv)}
+.drive-alert{font-size:10px;color:#7a5200;background:#fff7dd;border:1px solid #efd993;border-radius:8px;padding:8px 9px;line-height:1.45;margin-bottom:8px;font-weight:600}
+.drive-actions{display:grid;grid-template-columns:1fr;gap:6px;margin-top:auto}
+.drive-open{display:block;text-align:center;text-decoration:none;background:var(--az);color:var(--am);border-radius:8px;padding:8px 9px;font:700 9.5px Montserrat;text-transform:uppercase;letter-spacing:.3px}
+.drive-open.secondary{background:#e8f7fb;color:#0f6072;border:1px solid #a8deea}
+.drive-open:hover{filter:brightness(1.08)}
+.drive-nolink{font-size:9.5px;color:#8a939e;text-align:center;padding:7px;border:1px dashed #cfd6df;border-radius:8px}
+
+/* ESTRUTURA */
+.folder-terr{margin-bottom:18px;background:#fff;border:1.5px solid var(--bd);border-radius:12px;overflow:hidden}
+.folder-head{background:var(--az);color:#fff;padding:12px 16px;font:700 12px Montserrat;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.folder-head span{color:var(--am);font-size:10px}
+.comp-wrap{padding:14px}.turma-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.turma-folder{border:1px solid #e2e7ed;border-radius:9px;padding:11px;background:#fbfcfd}
+.turma-folder h4{font-size:10.5px;color:var(--az);margin-bottom:7px;line-height:1.4}
+.evline{font-size:9.5px;color:#68717d;line-height:1.6;display:flex;justify-content:space-between;gap:8px}.evline strong{color:var(--az)}
+.ev-ok{color:var(--gv);font-weight:700}.ev-miss{color:#9a6b00;font-weight:700}.ev-total{font-size:9.5px;color:#707b87;margin-top:7px}
+
+/* METAS */
+.meta-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.meta-card{background:#fff;border:1.5px solid var(--bd);border-radius:14px;padding:18px;display:flex;flex-direction:column;min-height:310px}
+.meta-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.meta-card-id{font:700 10px Montserrat;color:var(--ci);text-transform:uppercase;letter-spacing:.55px;margin-bottom:5px}
+.meta-card-title{font:700 13px Montserrat;color:var(--az);line-height:1.45}
+.meta-card-numbers{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.meta-number{background:#f6f8fb;border:1px solid #e1e7ee;border-radius:10px;padding:10px 11px}
+.meta-number .l{font:700 9px Montserrat;color:#7b8795;text-transform:uppercase;letter-spacing:.4px}
+.meta-number .n{font:700 13px Montserrat;color:var(--az);margin-top:4px;line-height:1.4}.meta-number.real .n{color:#08738a}
+.meta-reading{margin-top:11px;border-left:3px solid var(--ci);background:#f7fafc;border-radius:8px;padding:10px 11px;font-size:10.5px;color:#596575;line-height:1.5}.meta-reading strong{color:var(--az)}
+.meta-indicator{font-size:10px;color:#68717d;line-height:1.5;margin-top:10px}.meta-obs{font-size:9.7px;color:#7a5a00;line-height:1.5;margin-top:10px;background:#fffaf0;border:1px solid #f1dfad;border-radius:8px;padding:8px}
+
+/* FOOTER */
+.foot{background:var(--az);border-radius:12px;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;margin-top:32px;flex-wrap:wrap;gap:10px}
+.ftxt{color:rgba(255,255,255,.6);font-size:11px;line-height:1.5}.fbadge{background:var(--am);color:var(--az);font-size:10.5px;font-weight:700;padding:5px 12px;border-radius:20px;font-family:'Montserrat',sans-serif}
+
+@media(max-width:950px){.diag-top{grid-template-columns:repeat(2,1fr)}.g4,.g3{grid-template-columns:repeat(2,1fr)}.hnav{display:none}.activity-card-grid,.meta-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.drive-grid,.turma-grid{grid-template-columns:repeat(2,1fr)}.activity-card-evidence{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.g4,.g3,.g2,.diag-top,.activity-card-grid,.meta-card-grid,.drive-grid,.turma-grid{grid-template-columns:1fr}.hdri{padding:8px 14px}.hlogo{height:38px;max-width:105px}.hsub{display:none}.wrap{padding:18px 12px}.activity-card-evidence{grid-template-columns:repeat(2,1fr)}.evid-hero{align-items:flex-start}.evid-hero-badge{display:none}.pbox{padding:30px 24px}}
+</style>
 </head>
-
 <body>
-  <div id="login" class="login">
-    <div class="login-card">
-      <img class="login-logo" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
-      <h1>ESJ — Acesso ao painel</h1>
-      <p>Economia Solidária - Juntos!<br>Sistema de Monitoramento e Prestação de Contas</p>
-      <input id="senha" type="password" autocomplete="current-password" placeholder="Senha de acesso">
-      <button class="btn-principal" onclick="entrar()">Entrar</button>
-      <div id="erro" class="erro"></div>
-      <div class="login-nota">Acesso visual protegido no GitHub Pages.</div>
-    </div>
+
+<section id="pwd">
+  <div class="pbox">
+    <img class="plogo-main" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
+    <div class="pkicker">Sistema de Monitoramento de Prestação de Contas — SMPC</div>
+    <div class="psub">JUNTOS SP · ECONOMIA SOLIDÁRIA</div>
+    <div class="phint">Acesso ao painel executivo de evidências, metas e auditoria documental.</div>
+    <input class="pin" type="password" id="pf" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')chkPwd()">
+    <button class="pbtn" onclick="chkPwd()">ACESSAR SISTEMA</button>
+    <div class="perr" id="perr"></div>
   </div>
+  <div class="pfoot">Instituto BR Arte · Painel de monitoramento documental</div>
+</section>
 
-  <header>
-    <div class="header-wrap">
-      <div class="identidade">
-        <div class="header-logo-box">
-          <img class="header-logo" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
-        </div>
-        <div class="brand">
-          <h1>ESJ — Economia Solidária - Juntos!</h1>
-          <p>Sistema de Monitoramento e Prestação de Contas · Instituto BR Arte</p>
-        </div>
+<div id="ld"><div class="spin"></div><div class="ltxt">Carregando dados do projeto...</div></div>
+
+<div id="app">
+<header class="hdr">
+  <div class="hdri">
+    <div class="brandwrap">
+      <img class="hlogo" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
+      <div class="hdiv"></div>
+      <div>
+        <div class="htit">JUNTOS SP · ESJ</div>
+        <div class="hsub">Economia Solidária · Sistema de Monitoramento de Prestação de Contas</div>
       </div>
-      <span id="agentBadge" class="agent-badge">AGENTE_ESJ_V1</span>
     </div>
-  </header>
+    <nav class="hnav">
+      <button class="nbtn on" onclick="goV('dashboard',this)">Dashboard</button>
+      <button class="nbtn" onclick="goV('atividades',this)">Atividades</button>
+      <button class="nbtn" onclick="goV('evidenciasdrive',this)">Evidências Drive</button>
+      <button class="nbtn" onclick="goV('estrutura',this)">Estrutura</button>
+      <button class="nbtn" onclick="goV('metas',this)">Metas</button>
+    </nav>
+  </div>
+</header>
 
-  <main>
-    <div class="aviso-geral">
-      <strong>Painel documental:</strong> apresenta a realidade registrada na Conformidade Juntos, incluindo pendências, datas a validar, possíveis duplicidades e divergências documentais. Nenhuma ausência é ocultada.
+<main class="wrap">
+  <section class="vw on" id="vw-dashboard">
+    <div class="st">Ficha do Projeto</div>
+    <div class="card" id="ficha-card"></div>
+
+    <div class="st">Operação e Evidências</div>
+    <div class="diag-top">
+      <div class="diag-main">
+        <div class="n" id="diag-turmas">--</div>
+        <div class="t">Turmas monitoradas</div>
+        <div class="s">Acompanhamento das 30 turmas recebidas e auditadas no Juntos SP, com rastreabilidade por código ESJ-T01 a ESJ-T30.</div>
+      </div>
+      <div class="diag-card">
+        <div class="n" id="diag-com-evidencia">--</div>
+        <div class="t">Turmas com evidência</div>
+        <div class="s">Turmas com presença, fotografia, audiovisual, controle, plano ou outro documento operacional vinculado.</div>
+      </div>
+      <div class="diag-card">
+        <div class="n" id="diag-fotos">--</div>
+        <div class="t">Fotos auditadas</div>
+        <div class="s">Quantidade registrada na Conformidade Juntos, preservando alertas de duplicidade e datas a validar.</div>
+      </div>
+      <div class="diag-card">
+        <div class="n">AGENTE</div>
+        <div class="t">AGENTE_ESJ_V1</div>
+        <div class="s">Leitura automática de pendências, alertas, competência divergente, possíveis duplicidades e ausência documental.</div>
+      </div>
     </div>
 
-    <div id="loader" class="loader hidden">Carregando dados da Conformidade…</div>
+    <div class="st">Pendências Documentais Prioritárias</div>
+    <div id="alertas-documentais"></div>
 
-    <div id="app" class="hidden">
-      <section id="project" class="painel-card"></section>
-      <section id="kpis" class="kpis"></section>
+    <div class="st">Visão Geral</div>
+    <div class="g4" id="kpi-row"></div>
 
-      <section class="toolbar">
-        <input id="busca" placeholder="Buscar código, turma, curso ou competência…" oninput="renderTurmas()">
-        <select id="filtro" onchange="renderTurmas()">
-          <option value="">Todas as turmas</option>
-          <option value="auditoria">Auditoria / validação</option>
-          <option value="alerta">Com alertas</option>
-          <option value="pendencia">Com pendências</option>
-        </select>
-        <button class="btn-principal" onclick="carregar()">Atualizar dados</button>
-      </section>
-
-      <section id="turmas" class="turmas-grid"></section>
+    <div class="st">Execução Documental</div>
+    <div class="card" style="padding:20px 22px">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <div>
+          <div style="font:700 13px Montserrat;color:var(--az)">Turmas sem pendências formais de fechamento</div>
+          <div style="font-size:10.5px;color:#7b8490;margin-top:3px">Critério: relatório pedagógico, avaliação/satisfação e certificação vinculados.</div>
+        </div>
+        <div id="sc-txt" style="font:700 36px Montserrat;color:var(--ci)">--</div>
+      </div>
+      <div class="sbw" style="height:16px"><div class="sb" id="bar-g" style="width:0%"></div></div>
     </div>
-  </main>
 
-  <footer>
-    <div class="footer-wrap">
-      <div>ESJ · AGENTE_ESJ_V1 · Fonte: Conformidade Juntos</div>
-      <img class="footer-logo" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
+    <div class="st">Cobertura de Evidências</div>
+    <div class="card" style="padding:18px 22px">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <div>
+          <div style="font:700 13px Montserrat;color:var(--az)">Turmas que possuem algum registro operacional</div>
+          <div style="font-size:10.5px;color:#7b8490;margin-top:3px">Inclui composição parcial, sem ocultar pendências documentais de encerramento.</div>
+        </div>
+        <div id="ev-txt" style="font:700 28px Montserrat;color:var(--ci)">--</div>
+      </div>
+      <div class="sbw" style="height:14px"><div class="sb smid" id="bar-ev" style="width:0%"></div></div>
     </div>
-  </footer>
+  </section>
 
-  <script>
-    const PASSWORD_SHA256 = '87878139b6cdec7fa8aee7f5051e96937bd615d468b439dcf83ae1aed2bbe716';
-    let DADOS = null;
+  <section class="vw" id="vw-atividades">
+    <div class="st">Pendências Documentais Prioritárias</div>
+    <div id="alertas-atividades"></div>
+    <div class="st">Acompanhamento das 30 Turmas</div>
+    <div class="fbar">
+      <button class="fbtn on" data-f="Todos" onclick="setFiltroStatus('Todos',this)">Todos</button>
+      <button class="fbtn" data-f="Auditoria" onclick="setFiltroStatus('Auditoria',this)">Auditoria / validação</button>
+      <button class="fbtn" data-f="Alertas" onclick="setFiltroStatus('Alertas',this)">Com alertas</button>
+      <button class="fbtn" data-f="Pendencias" onclick="setFiltroStatus('Pendencias',this)">Com pendências</button>
+      <input class="search" id="busca" placeholder="Buscar código, turma, curso ou competência..." oninput="renderAtividades()">
+    </div>
+    <div id="tbl-atividades"></div>
+  </section>
 
-    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (m) => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[m]));
+  <section class="vw" id="vw-evidenciasdrive">
+    <div class="st">Explorador de Evidências no Google Drive</div>
+    <div class="evid-hero">
+      <div>
+        <div class="evid-hero-title">TRILHA DE EVIDÊNCIAS · ESJ</div>
+        <div class="evid-hero-sub">Os botões são gerados exclusivamente pelos links registrados na Conformidade Juntos. Fonte bruta e backup integral não são expostos neste painel.</div>
+      </div>
+      <div class="evid-hero-badge">SMPC · DRIVE</div>
+    </div>
+    <div class="g3 evid-kpis" id="drive-kpis"></div>
 
-    async function sha256(texto) {
-      const bytes = new TextEncoder().encode(texto);
-      const hash = await crypto.subtle.digest('SHA-256', bytes);
-      return [...new Uint8Array(hash)].map((x) => x.toString(16).padStart(2, '0')).join('');
-    }
+    <div class="st">Filtros de Evidência</div>
+    <div class="filters">
+      <button class="fbtn on" data-evf="COM_EVIDENCIA" onclick="setFiltroEvidencias('COM_EVIDENCIA',this)">Todas com evidência</button>
+      <button class="fbtn" data-evf="FOTOS" onclick="setFiltroEvidencias('FOTOS',this)">Com fotos</button>
+      <button class="fbtn" data-evf="VIDEOS" onclick="setFiltroEvidencias('VIDEOS',this)">Com vídeos</button>
+      <button class="fbtn" data-evf="PENDENCIAS" onclick="setFiltroEvidencias('PENDENCIAS',this)">Com pendências</button>
+      <select id="ev-competencia" class="search" style="flex:0 1 210px" onchange="renderEvidenciasDrive()"><option value="">Todas as competências</option></select>
+      <input id="ev-busca" class="search" placeholder="Buscar código, turma ou curso..." oninput="renderEvidenciasDrive()">
+    </div>
+    <div class="notice" style="margin-bottom:14px">A ausência de relatório pedagógico, avaliação/satisfação ou certificação permanece visível. Arquivos marcados como possível duplicidade, mesmo horário de origem, DATA_A_VALIDAR ou competência divergente não são apagados nem ocultados.</div>
+    <div id="drive-evidencias-content"></div>
+  </section>
 
-    async function entrar() {
-      const senha = document.getElementById('senha').value;
-      const erro = document.getElementById('erro');
-      erro.textContent = '';
+  <section class="vw" id="vw-estrutura">
+    <div class="st">Estrutura de Evidências</div>
+    <div class="notice" style="margin-bottom:14px">Visualização documental por turma conforme o padrão auditado do Juntos: presença, fotografias, audiovisual, controle, plano pedagógico, relatório pedagógico, avaliação/satisfação, certificação e outros documentos.</div>
+    <div id="estrutura-content"></div>
+  </section>
 
-      if (await sha256(senha) !== PASSWORD_SHA256) {
-        erro.textContent = 'Senha incorreta.';
-        return;
-      }
+  <section class="vw" id="vw-metas">
+    <div class="st">Acompanhamento de Metas e Indicadores</div>
+    <div class="notice" style="margin-bottom:14px">As metas abaixo são lidas diretamente da aba METAS da Conformidade. O painel não transforma “pastas recebidas” em meta cumprida quando a própria auditoria ainda exige validação.</div>
+    <div class="fbar" id="flt-metas"></div>
+    <div id="tbl-metas"></div>
+  </section>
 
-      sessionStorage.setItem('esj-github-auth', '1');
-      document.getElementById('login').classList.add('hidden');
-      await carregar();
-    }
+  <div class="foot">
+    <div class="ftxt" id="foot-txt">Juntos SP — Instituto BR Arte<br><span id="ultimaAtualizacaoPainel">Atualização automática ativa</span></div>
+    <div class="fbadge">AGENTE_ESJ_V1 · SMPC</div>
+  </div>
+</main>
+</div>
 
-    function apiUrl() {
-      const raw = String((window.ESJ_CONFIG && window.ESJ_CONFIG.API_URL) || '').trim();
-      if (!raw || raw.includes('COLE_AQUI')) {
-        throw new Error('Configure a URL do Web App no arquivo config.js.');
-      }
-      return raw + (raw.includes('?') ? '&' : '?') + 'action=api';
-    }
+<script>
+var SENHA = 'Brarte@2026';
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyw-yb7kuD5secoRV2R2LqaYYQw6qaOeKCVhDJd-H3z3VZL9bnAnyQrqYIr5f5z_kQB/exec';
+var D = null;
+var FILTRO_STATUS = 'Todos';
+var FILTRO_EVIDENCIAS = 'COM_EVIDENCIA';
 
-    async function carregar() {
-      document.getElementById('loader').classList.remove('hidden');
-      document.getElementById('app').classList.add('hidden');
+function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function arr(v){return Array.isArray(v)?v:[]}
+function AT(){return D&&Array.isArray(D.atividades)?D.atividades:[]}
+function MT(){return D&&Array.isArray(D.metas)?D.metas:[]}
+function CF(){return D&&D.config?D.config:{}}
+function RS(){return D&&D.resumo?D.resumo:{}}
+function AL(){return D&&Array.isArray(D.alertasProjeto)?D.alertasProjeto:[]}
 
-      try {
-        const resposta = await fetch(apiUrl(), { cache: 'no-store' });
-        if (!resposta.ok) throw new Error('API respondeu ' + resposta.status);
+function chkPwd(){
+  var v=document.getElementById('pf').value;
+  if(v===SENHA){document.getElementById('pwd').classList.add('off');carregarApp()}
+  else{document.getElementById('perr').textContent='Senha incorreta. Verifique com a coordenação.';document.getElementById('pf').value='';document.getElementById('pf').focus()}
+}
 
-        const dados = await resposta.json();
-        if (!dados || !dados.ok) throw new Error('Payload inválido da API ESJ.');
+function carregarApp(){
+  document.getElementById('ld').classList.add('on');
+  fetch(APPS_SCRIPT_URL+'?action=api&_='+Date.now(),{cache:'no-store'})
+    .then(function(resp){if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.json()})
+    .then(function(data){if(!data||data.ok!==true)throw new Error('Payload inválido da API ESJ');D=data;document.getElementById('ld').classList.remove('on');document.getElementById('app').classList.add('on');renderAll();iniciarAtualizacaoAutomatica();registrarHoraAtualizacao()})
+    .catch(function(err){console.error('Erro ao carregar dados:',err);document.getElementById('ld').classList.remove('on');alert('Não foi possível carregar a API do Juntos. Verifique a implantação do Apps Script.\n\n'+(err.message||err))})
+}
 
-        DADOS = dados;
-        renderTudo();
-        document.getElementById('app').classList.remove('hidden');
-      } catch (erro) {
-        document.getElementById('turmas').innerHTML = '';
-        alert(erro.message || erro);
-      } finally {
-        document.getElementById('loader').classList.add('hidden');
-      }
-    }
+function atualizarPainelSilenciosamente(){
+  fetch(APPS_SCRIPT_URL+'?action=api&_='+Date.now(),{cache:'no-store'})
+    .then(function(resp){if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.json()})
+    .then(function(data){if(data&&data.ok){D=data;renderAll();registrarHoraAtualizacao()}})
+    .catch(function(err){console.error('Atualização automática do SMPC:',err)})
+}
+function iniciarAtualizacaoAutomatica(){if(window.__SMPC_ESJ_REFRESH__)clearInterval(window.__SMPC_ESJ_REFRESH__);window.__SMPC_ESJ_REFRESH__=setInterval(atualizarPainelSilenciosamente,5*60*1000)}
+function registrarHoraAtualizacao(){var el=document.getElementById('ultimaAtualizacaoPainel');if(el)el.textContent='Atualizado automaticamente às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
+function goV(v,btn){document.querySelectorAll('.vw').forEach(function(e){e.classList.remove('on')});document.querySelectorAll('.nbtn').forEach(function(e){e.classList.remove('on')});document.getElementById('vw-'+v).classList.add('on');if(btn)btn.classList.add('on')}
 
-    function renderTudo() {
-      const c = DADOS.config || {};
-      const r = DADOS.resumo || {};
+function temLinks(r,k){return !!(r&&r.links&&Array.isArray(r.links[k])&&r.links[k].length)}
+function temDoc(r,k,flag){return !!(r&&((flag&&r[flag])||temLinks(r,k)))}
+function qtdPresencas(r){return r&&r.qtdPresencas!=null?Number(r.qtdPresencas||0):null}
+function qtdVideos(r){return r&&r.qtdVideos!=null?Number(r.qtdVideos||0):null}
+function temEvidencia(r){return Number(r.qtdFotos||0)>0||(qtdPresencas(r)!=null&&qtdPresencas(r)>0)||temDoc(r,'videos','temVideos')||temDoc(r,'controle','temControle')||temDoc(r,'plano','temPlano')||temDoc(r,'relatorio','temRelatorio')||temDoc(r,'avaliacao','temAvaliacao')||temDoc(r,'certificacao','temCertificacao')||['pasta','listas','fotos','videos','controle','plano','relatorio','avaliacao','certificacao','outros'].some(function(k){return temLinks(r,k)})}
+function pendencias(r){return arr(r&&r.pendencias)}
+function alertas(r){return arr(r&&r.alertas)}
+function statusClasse(r){var s=String(r&&r.status||'').toLowerCase();if(/cancelad|execução parcial/.test(s))return'bEr';if(alertas(r).length)return'bAl';if(pendencias(r).length)return'bIn';if(/auditoria|validar|pend/.test(s))return'bAn';return'bCo'}
+function cardClasse(r){if(/cancelad|execução parcial/i.test(r.status||''))return'st-erro';if(alertas(r).length)return'st-alerta';if(pendencias(r).length)return'st-insuficiente';return'st-ok'}
+function scl(n){if(n>=75)return'shi';if(n>=40)return'smid';if(n>=10)return'slow';return'scrit'}
+function resumoTipos(r){var n=0;if(temLinks(r,'listas'))n++;if(Number(r.qtdFotos||0)>0||temLinks(r,'fotos'))n++;if(temDoc(r,'videos','temVideos'))n++;if(temDoc(r,'controle','temControle'))n++;if(temDoc(r,'plano','temPlano'))n++;if(temDoc(r,'relatorio','temRelatorio'))n++;if(temDoc(r,'avaliacao','temAvaliacao'))n++;if(temDoc(r,'certificacao','temCertificacao'))n++;if(temLinks(r,'outros'))n++;return n}
 
-      document.getElementById('agentBadge').textContent = c.agente || 'AGENTE_ESJ_V1';
+function renderAll(){renderFicha();renderAlertasDocumentais();renderDash();renderAtividades();renderEvidenciasDrive();renderEstrutura();renderMetas('Todos');renderFooter()}
 
-      document.getElementById('project').innerHTML = `
-        <h2>${esc(c.projeto)} · Instrumento ${esc(c.instrumento)}</h2>
-        <div class="project-grid">
-          <div class="kv"><b>Financiador</b>${esc(c.financiador)}</div>
-          <div class="kv"><b>Território</b>${esc(c.territorio)}</div>
-          <div class="kv"><b>Código SMPC</b>${esc(c.codigo)}</div>
-          <div class="kv"><b>Agente</b>${esc(c.agente)}</div>
-          <div class="kv"><b>Vigência</b>${esc(c.vigencia)}</div>
-          <div class="kv"><b>Última auditoria</b>${esc(c.ultimaAtualizacao)}</div>
-          <div class="kv" style="grid-column: span 2"><b>Objeto</b>${esc(c.objeto)}</div>
-        </div>`;
+function renderFicha(){
+  var f=CF();
+  document.getElementById('ficha-card').innerHTML='<div class="ficha-grid">'+
+    ficha('Projeto',f.projeto||'Juntos SP')+ficha('Código SMPC',f.codigo||'ESJ')+ficha('Agente',f.agente||'AGENTE_ESJ_V1')+
+    ficha('Instrumento',f.instrumento||'970099')+ficha('Território',f.territorio||'São Miguel Paulista-SP')+ficha('Vigência atual',f.vigencia||'-')+
+    ficha('Órgão / Financiador',f.financiador||'-')+ficha('Cronograma físico original',f.cronogramaOriginal||'-')+
+    '<div class="ficha-span">'+ficha('Objeto',f.objeto||'-')+'</div></div>'
+}
+function ficha(rot,val){return '<div><div class="ficha-rot">'+esc(rot)+'</div><div class="ficha-val">'+esc(val)+'</div></div>'}
 
-      document.getElementById('kpis').innerHTML =
-        kpi(r.totalTurmas, 'Turmas') +
-        kpi(r.totalFotos, 'Fotos') +
-        kpi(r.emAuditoria, 'Em auditoria / validação') +
-        kpi(r.comAlertas, 'Com alertas') +
-        kpi(r.totalPendencias, 'Pendências formais');
+function renderAlertasDocumentais(){
+  var rows=AT(), containers=[document.getElementById('alertas-documentais'),document.getElementById('alertas-atividades')];
+  var projeto=AL(), comPend=rows.filter(function(r){return pendencias(r).length>0}), comAlert=rows.filter(function(r){return alertas(r).length>0});
+  var h='';
+  if(!projeto.length&&!comPend.length&&!comAlert.length){h='<div class="alerta-doc ok"><div class="alerta-top"><div><div class="alerta-title">✓ Sem pendências prioritárias</div><div class="alerta-help">Não há alertas documentais registrados no payload atual.</div></div><div class="alerta-count">0</div></div></div>'}
+  else{
+    h='<div class="alerta-doc"><div class="alerta-top"><div><div class="alerta-title">⚠ Pendências e alertas do Juntos SP</div><div class="alerta-help">O painel preserva a diferença entre falta documental, alerta de qualidade e divergência do próprio projeto.</div></div><div class="alerta-count">'+(projeto.length+comPend.length+comAlert.length)+'</div></div><div class="alerta-list">';
+    projeto.forEach(function(a){h+='<div class="alerta-item"><strong>'+esc(a.titulo||'Alerta documental')+'</strong><div class="alerta-meta">'+esc(a.texto||'')+'</div></div>'});
+    if(comPend.length)h+='<div class="alerta-item"><strong>Turmas com pendências de fechamento: '+comPend.length+'</strong><div class="alerta-meta">Principais ausências: relatório pedagógico, avaliação/satisfação e certificação, conforme cada linha da Conformidade.</div></div>';
+    if(comAlert.length)h+='<div class="alerta-item"><strong>Turmas com alertas de auditoria: '+comAlert.length+'</strong><div class="alerta-meta">Inclui possível duplicidade, mesmo horário de origem, DATA_A_VALIDAR, competência divergente, curso/aderência a validar e execução parcial.</div></div>';
+    h+='</div><div class="alerta-regra">Regra do índice: nenhuma ausência, duplicidade possível ou divergência documental é convertida automaticamente em evidência válida.</div></div>'
+  }
+  containers.forEach(function(el){if(el)el.innerHTML=h})
+}
 
-      renderTurmas();
-    }
+function kpi(n,l){return '<div class="kpi"><div class="knum">'+esc(n)+'</div><div class="klab">'+esc(l)+'</div></div>'}
+function renderDash(){
+  var rows=AT(),res=RS(),semPend=rows.filter(function(r){return pendencias(r).length===0}).length,comEv=rows.filter(temEvidencia).length,totalFotos=rows.reduce(function(s,r){return s+Number(r.qtdFotos||0)},0);
+  document.getElementById('kpi-row').innerHTML=kpi(rows.length,'Turmas Monitoradas')+kpi(comEv,'Turmas com Evidência')+kpi(totalFotos,'Fotos Auditadas')+kpi(res.comAlertas!=null?res.comAlertas:rows.filter(function(r){return alertas(r).length}).length,'Turmas com Alertas');
+  document.getElementById('diag-turmas').textContent=rows.length;document.getElementById('diag-com-evidencia').textContent=comEv;document.getElementById('diag-fotos').textContent=totalFotos;
+  var pct=rows.length?Math.round(semPend/rows.length*100):0;document.getElementById('sc-txt').textContent=semPend+' de '+rows.length+' • '+pct+'%';var bg=document.getElementById('bar-g');bg.style.width=pct+'%';bg.className='sb '+scl(pct);
+  var pctEv=rows.length?Math.round(comEv/rows.length*100):0;document.getElementById('ev-txt').textContent=comEv+' de '+rows.length+' • '+pctEv+'%';document.getElementById('bar-ev').style.width=pctEv+'%'
+}
 
-    function kpi(numero, label) {
-      return `<div class="kpi"><div class="kpi-numero">${esc(numero ?? 0)}</div><div class="kpi-label">${esc(label)}</div></div>`;
-    }
+function setFiltroStatus(v,btn){FILTRO_STATUS=v;document.querySelectorAll('#vw-atividades .fbtn').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');renderAtividades()}
+function renderAtividades(){
+  var busca=String((document.getElementById('busca')||{}).value||'').toLowerCase();
+  var rows=AT().filter(function(r){var ok=true;if(FILTRO_STATUS==='Auditoria')ok=/auditoria|validar|pend/i.test(String(r.status||''));else if(FILTRO_STATUS==='Alertas')ok=alertas(r).length>0;else if(FILTRO_STATUS==='Pendencias')ok=pendencias(r).length>0;var hay=[r.codigo,r.turma,r.competencia,r.territorio].join(' ').toLowerCase();return ok&&(!busca||hay.indexOf(busca)>=0)});
+  if(!rows.length){document.getElementById('tbl-atividades').innerHTML='<div class="card" style="color:#66717d;font-size:12px">Nenhuma turma encontrada para este filtro.</div>';return}
+  var h='<div class="activity-card-grid">';
+  rows.forEach(function(r){var qp=qtdPresencas(r),qv=qtdVideos(r),totalTipos=resumoTipos(r);h+='<article class="activity-card '+cardClasse(r)+'"><div class="activity-card-head"><div><div class="activity-card-kicker">'+esc(r.codigo||'ESJ')+'</div><div class="activity-card-title">'+esc(r.turma||'-')+'</div><div class="activity-card-sub">'+esc(r.competencia||'-')+' • '+esc(r.territorio||'-')+'</div></div><span class="badge '+statusClasse(r)+'">'+esc(r.status||'Em auditoria')+'</span></div>'+
+    '<div class="activity-card-evidence">'+evMini(qp==null?(temLinks(r,'listas')?'SIM':'—'):qp,'Presença')+evMini(Number(r.qtdFotos||0),'Fotos')+evMini(qv==null?(temDoc(r,'videos','temVideos')?'SIM':'0'):qv,'Vídeos')+evMini(temDoc(r,'controle','temControle')?'SIM':'—','Controle')+evMini(temDoc(r,'plano','temPlano')?'SIM':'—','Plano')+'</div>'+
+    '<div class="activity-card-total"><span>Tipos de evidência/documento vinculados</span><strong>'+totalTipos+' de 9</strong></div>';
+    var ch='';alertas(r).forEach(function(x){ch+='<span class="chip alert">'+esc(x)+'</span>'});pendencias(r).forEach(function(x){ch+='<span class="chip">Falta: '+esc(x)+'</span>'});if(ch)h+='<div class="chips">'+ch+'</div>';
+    h+='<div class="activity-card-reading"><strong>Leitura do Agente</strong><br>'+esc(r.leituraAgente||'Leitura não disponível.')+'</div></article>'});
+  h+='</div>';document.getElementById('tbl-atividades').innerHTML=h
+}
+function evMini(n,l){return '<div class="activity-evidence-item"><div class="n">'+esc(n)+'</div><div class="l">'+esc(l)+'</div></div>'}
 
-    function renderTurmas() {
-      if (!DADOS) return;
+function setFiltroEvidencias(v,btn){FILTRO_EVIDENCIAS=v;document.querySelectorAll('[data-evf]').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');renderEvidenciasDrive()}
+function prepararFiltroCompetencia(rows){var st=document.getElementById('ev-competencia');if(!st)return;var atual=st.value,vals=[];rows.forEach(function(r){if(r.competencia&&vals.indexOf(r.competencia)===-1)vals.push(r.competencia)});vals.sort();st.innerHTML='<option value="">Todas as competências</option>'+vals.map(function(v){return '<option value="'+esc(v)+'">'+esc(v)+'</option>'}).join('');if(vals.indexOf(atual)!==-1)st.value=atual}
+function renderEvidenciasDrive(){
+  var el=document.getElementById('drive-evidencias-content');if(!el)return;var base=AT();prepararFiltroCompetencia(base);var compSel=(document.getElementById('ev-competencia')||{}).value||'',busca=String((document.getElementById('ev-busca')||{}).value||'').toLowerCase().trim();
+  var rows=base.filter(function(r){if(compSel&&r.competencia!==compSel)return false;if(FILTRO_EVIDENCIAS==='COM_EVIDENCIA'&&!temEvidencia(r))return false;if(FILTRO_EVIDENCIAS==='FOTOS'&&Number(r.qtdFotos||0)<=0)return false;if(FILTRO_EVIDENCIAS==='VIDEOS'&&!temDoc(r,'videos','temVideos'))return false;if(FILTRO_EVIDENCIAS==='PENDENCIAS'&&pendencias(r).length===0&&alertas(r).length===0)return false;if(busca&&[r.codigo,r.turma,r.competencia].join(' ').toLowerCase().indexOf(busca)===-1)return false;return true});
+  var totalFotos=base.reduce(function(s,r){return s+Number(r.qtdFotos||0)},0),comEv=base.filter(temEvidencia).length,comVid=base.filter(function(r){return temDoc(r,'videos','temVideos')}).length;
+  document.getElementById('drive-kpis').innerHTML='<div class="evid-kpi"><div class="num">'+comEv+'</div><div class="lab">turma(s)<br>com evidência</div></div><div class="evid-kpi"><div class="num">'+totalFotos+'</div><div class="lab">registro(s)<br>fotográfico(s)</div></div><div class="evid-kpi"><div class="num">'+comVid+'</div><div class="lab">turma(s)<br>com audiovisual</div></div>';
+  if(!rows.length){el.innerHTML='<div class="card" style="font-size:12px;color:#66717e">Nenhuma turma encontrada para os filtros selecionados.</div>';return}
+  var porComp={};rows.forEach(function(r){var c=r.competencia||'Competência não informada';if(!porComp[c])porComp[c]=[];porComp[c].push(r)});var h='';
+  Object.keys(porComp).sort().forEach(function(comp){var rr=porComp[comp],tf=rr.reduce(function(s,r){return s+Number(r.qtdFotos||0)},0);h+='<div class="drive-terr"><div class="drive-terr-head"><div class="drive-terr-title">📁 '+esc(comp)+'</div><div class="drive-terr-meta">'+rr.length+' turma(s) · '+tf+' foto(s)</div></div><div class="drive-comp"><div class="drive-grid">';rr.forEach(function(r){h+=cardDrive(r)});h+='</div></div></div>'});el.innerHTML=h
+}
+function cardDrive(r){var qp=qtdPresencas(r),qv=qtdVideos(r),tem=temEvidencia(r),h='<div class="drive-card '+((pendencias(r).length||alertas(r).length)?'pending':'')+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div class="drive-card-title">'+esc(r.codigo)+' — '+esc(r.turma)+'</div><span class="badge '+statusClasse(r)+'">'+esc(r.status||'Em auditoria')+'</span></div><div class="drive-card-meta">'+esc(r.territorio||'-')+'<br>Tipos vinculados: <strong>'+resumoTipos(r)+' de 9</strong></div><div class="drive-chips">'+
+  '<span class="evchip doc">📋 '+(qp==null?(temLinks(r,'listas')?'Presença':'Sem presença'):qp+' presença(s)')+'</span><span class="evchip photo">📷 '+Number(r.qtdFotos||0)+' foto(s)</span><span class="evchip doc">🎥 '+(qv==null?(temDoc(r,'videos','temVideos')?'Disponível':'0'):qv)+' vídeo(s)</span><span class="evchip '+(temDoc(r,'plano','temPlano')?'ok':'')+'">Plano: '+(temDoc(r,'plano','temPlano')?'sim':'não')+'</span></div>';
+  if(alertas(r).length)h+='<div class="drive-alert">⚠ '+esc(alertas(r).join(' • '))+'</div>';if(pendencias(r).length)h+='<div class="drive-alert">⚠ Faltando: '+esc(pendencias(r).join(' • '))+'</div>';
+  h+='<div class="drive-actions">'+linksBotao(r.links&&r.links.pasta,'Abrir pasta oficial',false)+linksBotao(r.links&&r.links.listas,'Listas de presença',true)+linksBotao(r.links&&r.links.fotos,'Registros fotográficos',true)+linksBotao(r.links&&r.links.videos,'Registros audiovisuais',true)+linksBotao(r.links&&r.links.controle,'Controle da turma',true)+linksBotao(r.links&&r.links.plano,'Plano pedagógico',true)+linksBotao(r.links&&r.links.relatorio,'Relatório pedagógico',true)+linksBotao(r.links&&r.links.avaliacao,'Avaliação / satisfação',true)+linksBotao(r.links&&r.links.certificacao,'Certificação',true)+linksBotao(r.links&&r.links.outros,'Outros documentos',true)+'</div></div>';return h
+}
+function linksBotao(links,label,secondary){links=arr(links);if(!links.length)return '';return links.map(function(l,i){var sufixo=l.rotulo?' · '+esc(l.rotulo):(links.length>1?' '+(i+1):'');return '<a class="drive-open'+(secondary?' secondary':'')+'" href="'+esc(l.url)+'" target="_blank" rel="noopener noreferrer">'+esc(label)+sufixo+'</a>'}).join('')}
 
-      const busca = (document.getElementById('busca').value || '').toLowerCase();
-      const filtro = document.getElementById('filtro').value;
+function renderEstrutura(){var rows=AT(),comEv=rows.filter(temEvidencia).length,totalFotos=rows.reduce(function(s,r){return s+Number(r.qtdFotos||0)},0),h='<div class="folder-terr"><div class="folder-head"><div>📁 '+esc(CF().territorio||'São Miguel Paulista-SP')+'</div><span>'+comEv+' turma(s) com evidência • '+totalFotos+' foto(s)</span></div><div class="comp-wrap"><div class="turma-grid">';rows.forEach(function(r){h+=estruturaTurma(r)});h+='</div></div></div>';document.getElementById('estrutura-content').innerHTML=h}
+function estruturaTurma(r){var qp=qtdPresencas(r),qv=qtdVideos(r);return '<div class="turma-folder"><h4>📁 '+esc(r.codigo)+' — '+esc(r.turma)+'</h4>'+evLine('01_LISTAS_DE_PRESENCA',qp==null?(temLinks(r,'listas')?'Vinculado':'Não localizado'):qp+' registro(s)',temLinks(r,'listas'))+evLine('02_REGISTROS_FOTOGRAFICOS',Number(r.qtdFotos||0)+' arquivo(s)',Number(r.qtdFotos||0)>0)+evLine('03_REGISTROS_AUDIOVISUAIS',qv==null?(temDoc(r,'videos','temVideos')?'Vinculado':'Não localizado'):qv+' arquivo(s)',temDoc(r,'videos','temVideos'))+evLine('08_CONTROLE_DA_TURMA',temDoc(r,'controle','temControle')?'Vinculado':'Não localizado',temDoc(r,'controle','temControle'))+evLine('07_PLANO_PEDAGOGICO',temDoc(r,'plano','temPlano')?'Vinculado':'Não localizado',temDoc(r,'plano','temPlano'))+evLine('04_RELATORIO_PEDAGOGICO',temDoc(r,'relatorio','temRelatorio')?'Vinculado':'Não localizado',temDoc(r,'relatorio','temRelatorio'))+evLine('05_AVALIACAO_SATISFACAO',temDoc(r,'avaliacao','temAvaliacao')?'Vinculado':'Não localizado',temDoc(r,'avaliacao','temAvaliacao'))+evLine('06_CERTIFICACAO',temDoc(r,'certificacao','temCertificacao')?'Vinculado':'Não localizado',temDoc(r,'certificacao','temCertificacao'))+evLine('OUTROS_DOCUMENTOS',temLinks(r,'outros')?'Vinculado':'Não localizado',temLinks(r,'outros'))+'<div class="ev-total">Competência: <strong>'+esc(r.competencia||'-')+'</strong></div><div style="margin-top:7px"><span class="badge '+statusClasse(r)+'">'+esc(r.status||'Em auditoria')+'</span></div></div>'}
+function evLine(nome,val,ok){return '<div class="evline"><strong>'+esc(nome)+'</strong><span class="'+(ok?'ev-ok':'ev-miss')+'">'+esc(val)+'</span></div>'}
 
-      const atividades = (DADOS.atividades || []).filter((a) => {
-        const texto = [a.codigo, a.turma, a.competencia, a.status, a.leituraAgente].join(' ').toLowerCase();
+function metaCampo(m,nomes){for(var i=0;i<nomes.length;i++){if(m[nomes[i]]!=null&&String(m[nomes[i]]).trim()!=='')return m[nomes[i]]}return ''}
+function renderMetas(filtro){filtro=filtro||'Todos';var rows=MT(),grupos=['Todos','Metas','Indicadores','Etapas'],fb='';grupos.forEach(function(g){fb+='<button class="fbtn'+(filtro===g?' on':'')+'" onclick="renderMetas('+JSON.stringify(g)+')">'+esc(g)+'</button>'});document.getElementById('flt-metas').innerHTML=fb;if(filtro!=='Todos')rows=rows.filter(function(m){var id=String(metaCampo(m,['ID','Id','id'])||'').toUpperCase();if(filtro==='Metas')return id.indexOf('META-')===0;if(filtro==='Indicadores')return id.indexOf('IND-')===0;if(filtro==='Etapas')return id.indexOf('ETAPA-')===0;return true});if(!rows.length){document.getElementById('tbl-metas').innerHTML='<div class="card">Nenhuma meta encontrada.</div>';return}var h='<div class="meta-card-grid">';rows.forEach(function(m){var id=metaCampo(m,['ID','Id','id'])||'Meta',titulo=metaCampo(m,['Meta / Indicador','Descrição','Descricao','descricao'])||'Meta sem descrição',prev=metaCampo(m,['Previsto','Previsto Total','previstoTotal'])||'A apurar',apur=metaCampo(m,['Apurado','Realizado','realizado'])||'A apurar',st=metaCampo(m,['Status','status'])||'Em auditoria',fonte=metaCampo(m,['Fonte de verificação','Fonte de Verificação','indicador'])||'',obs=metaCampo(m,['Observação','Observacao','observacao'])||'';h+='<article class="meta-card"><div class="meta-card-head"><div><div class="meta-card-id">'+esc(id)+'</div><div class="meta-card-title">'+esc(titulo)+'</div></div><span class="badge '+classeMeta(st)+'">'+esc(st)+'</span></div><div class="meta-card-numbers"><div class="meta-number"><div class="l">Previsto</div><div class="n">'+esc(prev)+'</div></div><div class="meta-number real"><div class="l">Apurado</div><div class="n">'+esc(apur)+'</div></div></div><div class="meta-reading"><strong>Leitura do Agente</strong><br>'+esc(leituraMeta(apur,st,obs))+'</div>';if(fonte)h+='<div class="meta-indicator"><strong style="color:var(--az)">Fonte de verificação:</strong> '+esc(fonte)+'</div>';if(obs)h+='<div class="meta-obs">'+esc(obs)+'</div>';h+='</article>'});h+='</div>';document.getElementById('tbl-metas').innerHTML=h}
+function classeMeta(st){st=String(st||'').toLowerCase();if(/cumpr|conclu|ating/.test(st))return'bCo';if(/andamento|auditoria|triagem/.test(st))return'bAn';if(/alerta|erro|diverg/.test(st))return'bEr';return'bPe'}
+function leituraMeta(apurado,status,obs){var a=String(apurado||'').toLowerCase(),s=String(status||'').toLowerCase();if(/a apurar|pendente|não apur|nao apur/.test(a))return 'O resultado ainda não está consolidado; manter como pendente até a fonte de verificação estar disponível.';if(/auditoria|triagem/.test(s))return 'Há informação preliminar registrada, mas a própria Conformidade mantém a meta em auditoria. Não considerar cumprida automaticamente.';if(/cumpr|conclu|ating/.test(s))return 'A meta está registrada como atingida/concluída na fonte de acompanhamento.';return obs?'Há apuração registrada; consultar a observação e a fonte de verificação antes de concluir o atendimento da meta.':'Há apuração registrada e a meta segue em acompanhamento.'}
 
-        if (busca && !texto.includes(busca)) return false;
-        if (filtro === 'auditoria' && !/auditoria|validar|pend/i.test(a.status)) return false;
-        if (filtro === 'alerta' && !(a.alertas || []).length) return false;
-        if (filtro === 'pendencia' && !(a.pendencias || []).length) return false;
-        return true;
-      });
+function renderFooter(){var f=CF(),el=document.getElementById('foot-txt');if(el)el.firstChild.nodeValue=(f.projeto||'Juntos SP')+' — Instituto BR Arte × '+(f.financiador||'Ministério do Trabalho e Emprego')+' '}
 
-      document.getElementById('turmas').innerHTML = atividades.length
-        ? atividades.map(cardTurma).join('')
-        : '<div class="empty">Nenhuma turma encontrada.</div>';
-    }
-
-    function cardTurma(a) {
-      const classeStatus = /cancelad|execução parcial/i.test(a.status)
-        ? 'danger'
-        : !/auditoria|validar|pend/i.test(a.status)
-          ? 'good'
-          : '';
-
-      const alertas = (a.alertas || [])
-        .map((x) => `<span class="chip">${esc(x)}</span>`)
-        .join('');
-
-      const pendencias = (a.pendencias || [])
-        .map((x) => `<span class="chip pending">Falta: ${esc(x)}</span>`)
-        .join('');
-
-      return `
-        <article class="turma-card">
-          <div class="turma-head">
-            <div>
-              <h3>${esc(a.codigo)} — ${esc(a.turma)}</h3>
-              <div class="sub">${esc(a.territorio)} · ${esc(a.competencia)}</div>
-            </div>
-            <div class="status ${classeStatus}">${esc(a.status)}</div>
-          </div>
-
-          <div class="turma-body">
-            <div class="facts">
-              <div class="fact"><b>Código SMPC</b>${esc(a.codigo)}</div>
-              <div class="fact"><b>Agente</b>${esc(a.agente)}</div>
-              <div class="fact"><b>Presença</b>${esc(a.listaPresenca || 'Não localizada')}</div>
-              <div class="fact"><b>Fotos</b>${esc(a.qtdFotos || '0')}</div>
-            </div>
-
-            <div class="chips">${alertas}${pendencias}</div>
-
-            <div class="agent-read">
-              <b>Leitura do Agente</b>
-              ${esc(a.leituraAgente)}
-            </div>
-
-            <div class="evidencias">
-              <h4>Evidências Drive</h4>
-              <div class="buttons">
-                ${evid(a.links?.pasta, 'Pasta oficial')}
-                ${evid(a.links?.listas, 'Listas de presença')}
-                ${evid(a.links?.fotos, 'Registros fotográficos')}
-                ${evid(a.links?.videos, 'Registros audiovisuais')}
-                ${evid(a.links?.controle, 'Controle da turma')}
-                ${evid(a.links?.plano, 'Plano pedagógico')}
-                ${evid(a.links?.relatorio, 'Relatório pedagógico')}
-                ${evid(a.links?.avaliacao, 'Avaliação / satisfação')}
-                ${evid(a.links?.certificacao, 'Certificação')}
-                ${evid(a.links?.outros, 'Outros documentos')}
-              </div>
-            </div>
-          </div>
-        </article>`;
-    }
-
-    function evid(links, label) {
-      if (!links || !links.length) {
-        return `<span class="missing">${esc(label)} · Não localizado</span>`;
-      }
-
-      return links.map((link, indice) => `
-        <a class="linkbtn" href="${esc(link.url)}" target="_blank" rel="noopener noreferrer">
-          ${esc(label)}${link.rotulo ? ' · ' + esc(link.rotulo) : links.length > 1 ? ' ' + (indice + 1) : ''}
-        </a>`).join('');
-    }
-
-    window.addEventListener('load', () => {
-      if (sessionStorage.getItem('esj-github-auth') === '1') {
-        document.getElementById('login').classList.add('hidden');
-        carregar();
-      }
-
-      document.getElementById('senha').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') entrar();
-      });
-    });
-  </script>
+window.addEventListener('DOMContentLoaded',function(){try{sessionStorage.removeItem('esj_ok')}catch(e){}var pwd=document.getElementById('pwd'),app=document.getElementById('app');if(pwd)pwd.classList.remove('off');if(app)app.classList.remove('on');setTimeout(function(){var f=document.getElementById('pf');if(f)f.focus()},100)})
+</script>
 </body>
 </html>
