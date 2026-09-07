@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#092040">
+  <title>ESJ — Economia Solidária - Juntos! | SMPC</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <script src="config.js"></script>
+
+  <style>
+    :root {
+      --azul-principal: #092040;
+      --ciano: #00B7D7;
+      --amarelo: #ECC203;
+      --cinza-claro: #EFF1F3;
+      --azul-escuro: #021738;
+      --branco: #FFFFFF;
+      --texto: #243447;
+      --texto-suave: #617181;
+      --borda: #D9E1E7;
+      --perigo: #A53B3B;
+      --perigo-bg: #FBE9E9;
+      --aviso: #8B6500;
+      --aviso-bg: #FFF7D6;
+      --sucesso: #1F6A4B;
+      --sucesso-bg: #E6F4EC;
+      --sombra: 0 12px 30px rgba(2, 23, 56, .08);
+      --raio: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--cinza-claro);
+      color: var(--texto);
+      font-family: "Open Sans", Arial, sans-serif;
+      font-weight: 400;
+    }
+
+    h1, h2, h3, h4, .titulo-montserrat {
+      font-family: "Montserrat", Arial, sans-serif;
+      color: var(--azul-principal);
+      margin-top: 0;
+    }
+
+    h1 { font-weight: 700; }
+    h2, h3, h4 { font-weight: 600; }
+
+    table, th, td {
+      font-family: "Open Sans", Arial, sans-serif;
+    }
+
+    th { font-weight: 600; }
+
+    .hidden { display: none !important; }
+
+    .login {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(0,183,215,.24), transparent 32%),
+        radial-gradient(circle at 85% 90%, rgba(236,194,3,.14), transparent 28%),
+        linear-gradient(145deg, var(--azul-escuro), var(--azul-principal));
+    }
+
+    .login-card {
+      width: min(450px, 100%);
+      background: var(--branco);
+      border-radius: 22px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.35);
+      padding: 30px;
+      border-top: 6px solid var(--ciano);
+    }
+
+    .login-logo {
+      display: block;
+      width: 170px;
+      max-height: 120px;
+      object-fit: contain;
+      margin: 0 auto 18px;
+    }
+
+    .login-card h1 {
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .login-card p {
+      text-align: center;
+      color: var(--texto-suave);
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+
+    .login-card input {
+      width: 100%;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      padding: 13px 14px;
+      font: 400 15px "Open Sans", Arial, sans-serif;
+      outline: none;
+      transition: .2s ease;
+      background: var(--branco);
+    }
+
+    .login-card input:focus {
+      border-color: var(--ciano);
+      box-shadow: 0 0 0 3px rgba(0,183,215,.14);
+    }
+
+    .btn-principal {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      color: var(--branco);
+      background: var(--azul-principal);
+      font-family: "Montserrat", Arial, sans-serif;
+      font-weight: 600;
+      transition: .2s ease;
+    }
+
+    .btn-principal:hover {
+      background: var(--azul-escuro);
+      transform: translateY(-1px);
+    }
+
+    .login-card .btn-principal {
+      width: 100%;
+      margin-top: 10px;
+      border-bottom: 4px solid var(--amarelo);
+    }
+
+    .erro {
+      min-height: 18px;
+      margin-top: 9px;
+      color: var(--perigo);
+      font-size: 12px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .login-nota {
+      margin-top: 10px;
+      font-size: 11px;
+      text-align: center;
+      color: var(--texto-suave);
+    }
+
+    header {
+      color: var(--branco);
+      background: linear-gradient(135deg, var(--azul-escuro), var(--azul-principal));
+      border-bottom: 5px solid var(--ciano);
+      box-shadow: var(--sombra);
+    }
+
+    .header-wrap {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px 24px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .identidade {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .header-logo-box {
+      background: var(--branco);
+      border-radius: 14px;
+      padding: 8px 12px;
+      flex: 0 0 auto;
+      box-shadow: 0 5px 18px rgba(0,0,0,.16);
+    }
+
+    .header-logo {
+      width: 125px;
+      height: 70px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand h1 {
+      color: var(--branco);
+      margin: 0;
+      font-size: clamp(22px, 2.4vw, 34px);
+      line-height: 1.15;
+    }
+
+    .brand p {
+      margin: 7px 0 0;
+      color: rgba(255,255,255,.83);
+      font-size: 14px;
+    }
+
+    .agent-badge {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.1);
+      border-radius: 999px;
+      color: var(--branco);
+      font: 600 12px "Montserrat", Arial, sans-serif;
+      white-space: nowrap;
+    }
+
+    main {
+      width: min(1480px, calc(100% - 32px));
+      margin: 22px auto 0;
+    }
+
+    .aviso-geral {
+      background: var(--branco);
+      border-left: 5px solid var(--amarelo);
+      border-radius: 12px;
+      padding: 13px 15px;
+      margin-bottom: 16px;
+      box-shadow: var(--sombra);
+      line-height: 1.5;
+    }
+
+    .aviso-geral strong {
+      color: var(--azul-principal);
+      font-family: "Montserrat", Arial, sans-serif;
+    }
+
+    .painel-card,
+    .toolbar,
+    .turma-card,
+    .kpi {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: var(--raio);
+      box-shadow: var(--sombra);
+    }
+
+    .painel-card {
+      padding: 20px;
+      margin-bottom: 16px;
+      border-top: 4px solid var(--ciano);
+    }
+
+    .painel-card h2 {
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .kv {
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      padding: 10px 11px;
+      background: #F9FBFC;
+      min-width: 0;
+    }
+
+    .kv b {
+      display: block;
+      color: var(--azul-principal);
+      font: 600 11px "Open Sans", Arial, sans-serif;
+      margin-bottom: 4px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 11px;
+      margin-bottom: 16px;
+    }
+
+    .kpi {
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--ciano);
+    }
+
+    .kpi:nth-child(3)::before,
+    .kpi:nth-child(4)::before,
+    .kpi:nth-child(5)::before {
+      background: var(--amarelo);
+    }
+
+    .kpi-numero {
+      color: var(--azul-principal);
+      font: 700 29px "Montserrat", Arial, sans-serif;
+    }
+
+    .kpi-label {
+      color: var(--texto-suave);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .toolbar {
+      padding: 12px;
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .toolbar input,
+    .toolbar select {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 9px;
+      padding: 10px 11px;
+      font: 400 14px "Open Sans", Arial, sans-serif;
+      color: var(--texto);
+      outline: none;
+    }
+
+    .toolbar input {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .toolbar input:focus,
+    .toolbar select:focus {
+      border-color: var(--ciano);
+      box-shadow: 0 0 0 3px rgba(0,183,215,.11);
+    }
+
+    .turmas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .turma-card {
+      overflow: hidden;
+      border-top: 4px solid var(--azul-principal);
+    }
+
+    .turma-head {
+      padding: 16px 17px 11px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .turma-head h3 {
+      font-size: 17px;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .sub {
+      margin-top: 5px;
+      color: var(--texto-suave);
+      font-size: 12px;
+    }
+
+    .status {
+      max-width: 220px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: var(--aviso);
+      background: var(--aviso-bg);
+      font: 600 11px "Open Sans", Arial, sans-serif;
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .status.danger {
+      color: var(--perigo);
+      background: var(--perigo-bg);
+    }
+
+    .status.good {
+      color: var(--sucesso);
+      background: var(--sucesso-bg);
+    }
+
+    .turma-body {
+      padding: 4px 17px 17px;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .fact {
+      background: #F8FAFB;
+      border: 1px solid #E6ECEF;
+      border-radius: 9px;
+      padding: 9px;
+      min-width: 0;
+    }
+
+    .fact b {
+      display: block;
+      color: var(--azul-principal);
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 11px 0;
+    }
+
+    .chip {
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: var(--perigo);
+      background: var(--perigo-bg);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .chip.pending {
+      color: var(--aviso);
+      background: var(--aviso-bg);
+    }
+
+    .agent-read {
+      margin: 10px 0 12px;
+      padding: 12px 13px;
+      background: rgba(0,183,215,.07);
+      border-left: 4px solid var(--ciano);
+      border-radius: 9px;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .agent-read b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--azul-principal);
+      font-family: "Montserrat", Arial, sans-serif;
+      font-weight: 600;
+    }
+
+    .evidencias h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .linkbtn,
+    .missing {
+      display: inline-block;
+      border-radius: 8px;
+      padding: 7px 9px;
+      font-size: 12px;
+    }
+
+    .linkbtn {
+      text-decoration: none;
+      color: var(--azul-principal);
+      background: rgba(0,183,215,.08);
+      border: 1px solid rgba(0,183,215,.32);
+      font-weight: 600;
+      transition: .15s ease;
+    }
+
+    .linkbtn:hover {
+      background: var(--ciano);
+      color: var(--azul-escuro);
+      border-color: var(--ciano);
+    }
+
+    .missing {
+      color: #8794A0;
+      background: #F7F8F9;
+      border: 1px dashed #CAD2D8;
+    }
+
+    .loader,
+    .empty {
+      text-align: center;
+      color: var(--texto-suave);
+      padding: 38px 20px;
+    }
+
+    footer {
+      margin-top: 28px;
+      background: var(--azul-escuro);
+      color: rgba(255,255,255,.8);
+      border-top: 4px solid var(--amarelo);
+    }
+
+    .footer-wrap {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .footer-logo {
+      width: 86px;
+      height: 48px;
+      object-fit: contain;
+      background: var(--branco);
+      border-radius: 8px;
+      padding: 4px 7px;
+    }
+
+    @media (max-width: 1040px) {
+      .turmas-grid { grid-template-columns: 1fr; }
+      .project-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .kpis { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 680px) {
+      .header-wrap { padding: 18px 14px; align-items: flex-start; }
+      .identidade { align-items: flex-start; }
+      .header-logo-box { padding: 5px 7px; }
+      .header-logo { width: 82px; height: 52px; }
+      .agent-badge { display: none; }
+      main { width: min(100% - 20px, 1480px); }
+      .project-grid, .facts, .kpis { grid-template-columns: 1fr 1fr; }
+      .turma-head { flex-direction: column; }
+      .status { max-width: 100%; text-align: left; }
+      .footer-wrap { width: min(100% - 20px, 1480px); }
+    }
+
+    @media (max-width: 430px) {
+      .project-grid, .facts, .kpis { grid-template-columns: 1fr; }
+      .header-logo { width: 72px; }
+      .brand p { font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="login" class="login">
+    <div class="login-card">
+      <img class="login-logo" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
+      <h1>ESJ — Acesso ao painel</h1>
+      <p>Economia Solidária - Juntos!<br>Sistema de Monitoramento e Prestação de Contas</p>
+      <input id="senha" type="password" autocomplete="current-password" placeholder="Senha de acesso">
+      <button class="btn-principal" onclick="entrar()">Entrar</button>
+      <div id="erro" class="erro"></div>
+      <div class="login-nota">Acesso visual protegido no GitHub Pages.</div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-wrap">
+      <div class="identidade">
+        <div class="header-logo-box">
+          <img class="header-logo" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
+        </div>
+        <div class="brand">
+          <h1>ESJ — Economia Solidária - Juntos!</h1>
+          <p>Sistema de Monitoramento e Prestação de Contas · Instituto BR Arte</p>
+        </div>
+      </div>
+      <span id="agentBadge" class="agent-badge">AGENTE_ESJ_V1</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="aviso-geral">
+      <strong>Painel documental:</strong> apresenta a realidade registrada na Conformidade Juntos, incluindo pendências, datas a validar, possíveis duplicidades e divergências documentais. Nenhuma ausência é ocultada.
+    </div>
+
+    <div id="loader" class="loader hidden">Carregando dados da Conformidade…</div>
+
+    <div id="app" class="hidden">
+      <section id="project" class="painel-card"></section>
+      <section id="kpis" class="kpis"></section>
+
+      <section class="toolbar">
+        <input id="busca" placeholder="Buscar código, turma, curso ou competência…" oninput="renderTurmas()">
+        <select id="filtro" onchange="renderTurmas()">
+          <option value="">Todas as turmas</option>
+          <option value="auditoria">Auditoria / validação</option>
+          <option value="alerta">Com alertas</option>
+          <option value="pendencia">Com pendências</option>
+        </select>
+        <button class="btn-principal" onclick="carregar()">Atualizar dados</button>
+      </section>
+
+      <section id="turmas" class="turmas-grid"></section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div>ESJ · AGENTE_ESJ_V1 · Fonte: Conformidade Juntos</div>
+      <img class="footer-logo" src="assets/logo-instituto-br.png" alt="Instituto BR Arte">
+    </div>
+  </footer>
+
+  <script>
+    const PASSWORD_SHA256 = '87878139b6cdec7fa8aee7f5051e96937bd615d468b439dcf83ae1aed2bbe716';
+    let DADOS = null;
+
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+
+    async function sha256(texto) {
+      const bytes = new TextEncoder().encode(texto);
+      const hash = await crypto.subtle.digest('SHA-256', bytes);
+      return [...new Uint8Array(hash)].map((x) => x.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function entrar() {
+      const senha = document.getElementById('senha').value;
+      const erro = document.getElementById('erro');
+      erro.textContent = '';
+
+      if (await sha256(senha) !== PASSWORD_SHA256) {
+        erro.textContent = 'Senha incorreta.';
+        return;
+      }
+
+      sessionStorage.setItem('esj-github-auth', '1');
+      document.getElementById('login').classList.add('hidden');
+      await carregar();
+    }
+
+    function apiUrl() {
+      const raw = String((window.ESJ_CONFIG && window.ESJ_CONFIG.API_URL) || '').trim();
+      if (!raw || raw.includes('COLE_AQUI')) {
+        throw new Error('Configure a URL do Web App no arquivo config.js.');
+      }
+      return raw + (raw.includes('?') ? '&' : '?') + 'action=api';
+    }
+
+    async function carregar() {
+      document.getElementById('loader').classList.remove('hidden');
+      document.getElementById('app').classList.add('hidden');
+
+      try {
+        const resposta = await fetch(apiUrl(), { cache: 'no-store' });
+        if (!resposta.ok) throw new Error('API respondeu ' + resposta.status);
+
+        const dados = await resposta.json();
+        if (!dados || !dados.ok) throw new Error('Payload inválido da API ESJ.');
+
+        DADOS = dados;
+        renderTudo();
+        document.getElementById('app').classList.remove('hidden');
+      } catch (erro) {
+        document.getElementById('turmas').innerHTML = '';
+        alert(erro.message || erro);
+      } finally {
+        document.getElementById('loader').classList.add('hidden');
+      }
+    }
+
+    function renderTudo() {
+      const c = DADOS.config || {};
+      const r = DADOS.resumo || {};
+
+      document.getElementById('agentBadge').textContent = c.agente || 'AGENTE_ESJ_V1';
+
+      document.getElementById('project').innerHTML = `
+        <h2>${esc(c.projeto)} · Instrumento ${esc(c.instrumento)}</h2>
+        <div class="project-grid">
+          <div class="kv"><b>Financiador</b>${esc(c.financiador)}</div>
+          <div class="kv"><b>Território</b>${esc(c.territorio)}</div>
+          <div class="kv"><b>Código SMPC</b>${esc(c.codigo)}</div>
+          <div class="kv"><b>Agente</b>${esc(c.agente)}</div>
+          <div class="kv"><b>Vigência</b>${esc(c.vigencia)}</div>
+          <div class="kv"><b>Última auditoria</b>${esc(c.ultimaAtualizacao)}</div>
+          <div class="kv" style="grid-column: span 2"><b>Objeto</b>${esc(c.objeto)}</div>
+        </div>`;
+
+      document.getElementById('kpis').innerHTML =
+        kpi(r.totalTurmas, 'Turmas') +
+        kpi(r.totalFotos, 'Fotos') +
+        kpi(r.emAuditoria, 'Em auditoria / validação') +
+        kpi(r.comAlertas, 'Com alertas') +
+        kpi(r.totalPendencias, 'Pendências formais');
+
+      renderTurmas();
+    }
+
+    function kpi(numero, label) {
+      return `<div class="kpi"><div class="kpi-numero">${esc(numero ?? 0)}</div><div class="kpi-label">${esc(label)}</div></div>`;
+    }
+
+    function renderTurmas() {
+      if (!DADOS) return;
+
+      const busca = (document.getElementById('busca').value || '').toLowerCase();
+      const filtro = document.getElementById('filtro').value;
+
+      const atividades = (DADOS.atividades || []).filter((a) => {
+        const texto = [a.codigo, a.turma, a.competencia, a.status, a.leituraAgente].join(' ').toLowerCase();
+
+        if (busca && !texto.includes(busca)) return false;
+        if (filtro === 'auditoria' && !/auditoria|validar|pend/i.test(a.status)) return false;
+        if (filtro === 'alerta' && !(a.alertas || []).length) return false;
+        if (filtro === 'pendencia' && !(a.pendencias || []).length) return false;
+        return true;
+      });
+
+      document.getElementById('turmas').innerHTML = atividades.length
+        ? atividades.map(cardTurma).join('')
+        : '<div class="empty">Nenhuma turma encontrada.</div>';
+    }
+
+    function cardTurma(a) {
+      const classeStatus = /cancelad|execução parcial/i.test(a.status)
+        ? 'danger'
+        : !/auditoria|validar|pend/i.test(a.status)
+          ? 'good'
+          : '';
+
+      const alertas = (a.alertas || [])
+        .map((x) => `<span class="chip">${esc(x)}</span>`)
+        .join('');
+
+      const pendencias = (a.pendencias || [])
+        .map((x) => `<span class="chip pending">Falta: ${esc(x)}</span>`)
+        .join('');
+
+      return `
+        <article class="turma-card">
+          <div class="turma-head">
+            <div>
+              <h3>${esc(a.codigo)} — ${esc(a.turma)}</h3>
+              <div class="sub">${esc(a.territorio)} · ${esc(a.competencia)}</div>
+            </div>
+            <div class="status ${classeStatus}">${esc(a.status)}</div>
+          </div>
+
+          <div class="turma-body">
+            <div class="facts">
+              <div class="fact"><b>Código SMPC</b>${esc(a.codigo)}</div>
+              <div class="fact"><b>Agente</b>${esc(a.agente)}</div>
+              <div class="fact"><b>Presença</b>${esc(a.listaPresenca || 'Não localizada')}</div>
+              <div class="fact"><b>Fotos</b>${esc(a.qtdFotos || '0')}</div>
+            </div>
+
+            <div class="chips">${alertas}${pendencias}</div>
+
+            <div class="agent-read">
+              <b>Leitura do Agente</b>
+              ${esc(a.leituraAgente)}
+            </div>
+
+            <div class="evidencias">
+              <h4>Evidências Drive</h4>
+              <div class="buttons">
+                ${evid(a.links?.pasta, 'Pasta oficial')}
+                ${evid(a.links?.listas, 'Listas de presença')}
+                ${evid(a.links?.fotos, 'Registros fotográficos')}
+                ${evid(a.links?.videos, 'Registros audiovisuais')}
+                ${evid(a.links?.controle, 'Controle da turma')}
+                ${evid(a.links?.plano, 'Plano pedagógico')}
+                ${evid(a.links?.relatorio, 'Relatório pedagógico')}
+                ${evid(a.links?.avaliacao, 'Avaliação / satisfação')}
+                ${evid(a.links?.certificacao, 'Certificação')}
+                ${evid(a.links?.outros, 'Outros documentos')}
+              </div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function evid(links, label) {
+      if (!links || !links.length) {
+        return `<span class="missing">${esc(label)} · Não localizado</span>`;
+      }
+
+      return links.map((link, indice) => `
+        <a class="linkbtn" href="${esc(link.url)}" target="_blank" rel="noopener noreferrer">
+          ${esc(label)}${link.rotulo ? ' · ' + esc(link.rotulo) : links.length > 1 ? ' ' + (indice + 1) : ''}
+        </a>`).join('');
+    }
+
+    window.addEventListener('load', () => {
+      if (sessionStorage.getItem('esj-github-auth') === '1') {
+        document.getElementById('login').classList.add('hidden');
+        carregar();
+      }
+
+      document.getElementById('senha').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') entrar();
+      });
+    });
+  </script>
+</body>
+</html>
