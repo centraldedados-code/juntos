@@ -280,8 +280,8 @@ a{color:inherit}
     <div class="card" style="padding:20px 22px">
       <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
         <div>
-          <div style="font:700 13px Montserrat;color:var(--az)">Turmas sem pendências formais de fechamento</div>
-          <div style="font-size:10.5px;color:#7b8490;margin-top:3px">Critério: relatório pedagógico, avaliação/satisfação e certificação vinculados.</div>
+          <div style="font:700 13px Montserrat;color:var(--az)">Turmas com evidências obrigatórias de fechamento</div>
+          <div style="font-size:10.5px;color:#7b8490;margin-top:3px">Critério: plano pedagógico e avaliação/pesquisa de satisfação vinculados.</div>
         </div>
         <div id="sc-txt" style="font:700 36px Montserrat;color:var(--ci)">--</div>
       </div>
@@ -335,13 +335,13 @@ a{color:inherit}
       <select id="ev-competencia" class="search" style="flex:0 1 210px" onchange="renderEvidenciasDrive()"><option value="">Todas as competências</option></select>
       <input id="ev-busca" class="search" placeholder="Buscar código, turma ou curso..." oninput="renderEvidenciasDrive()">
     </div>
-    <div class="notice" style="margin-bottom:14px">A ausência de relatório pedagógico, avaliação/satisfação ou certificação permanece visível. Arquivos marcados como possível duplicidade, mesmo horário de origem, DATA_A_VALIDAR ou competência divergente não são apagados nem ocultados.</div>
+    <div class="notice" style="margin-bottom:14px">A ausência de plano pedagógico e/ou avaliação/pesquisa de satisfação permanece visível. Relatório periódico é tratado no nível de gestão do projeto e certificação não é exigida por turma. Arquivos marcados como possível duplicidade, mesmo horário de origem, DATA_A_VALIDAR ou competência divergente não são apagados nem ocultados.</div>
     <div id="drive-evidencias-content"></div>
   </section>
 
   <section class="vw" id="vw-estrutura">
     <div class="st">Estrutura de Evidências</div>
-    <div class="notice" style="margin-bottom:14px">Visualização documental por turma conforme o padrão auditado do Juntos: presença, fotografias, audiovisual, controle, plano pedagógico, relatório pedagógico, avaliação/satisfação, certificação e outros documentos.</div>
+    <div class="notice" style="margin-bottom:14px">Visualização documental por turma conforme o padrão auditado do Juntos: presença, fotografias, audiovisual, controle, plano pedagógico, avaliação/pesquisa de satisfação e outros documentos. Relatório periódico é tratado no nível de gestão do projeto; certificação não é exigida por turma.</div>
     <div id="estrutura-content"></div>
   </section>
 
@@ -404,7 +404,7 @@ function temDoc(r,k,flag){return !!(r&&((flag&&r[flag])||temLinks(r,k)))}
 function qtdPresencas(r){return r&&r.qtdPresencas!=null?Number(r.qtdPresencas||0):null}
 function qtdVideos(r){return r&&r.qtdVideos!=null?Number(r.qtdVideos||0):null}
 function temEvidencia(r){return numESJ(r.qtdFotos)>0||(qtdPresencas(r)!=null&&qtdPresencas(r)>0)||temDoc(r,'videos','temVideos')||temDoc(r,'controle','temControle')||temDoc(r,'plano','temPlano')||temDoc(r,'avaliacao','temAvaliacao')||['pasta','listas','fotos','videos','controle','plano','avaliacao','outros'].some(function(k){return temLinks(r,k)})}
-function pendencias(r){return arr(r&&r.pendencias)}
+function pendencias(r){var p=[];if(!temDoc(r,'plano','temPlano'))p.push('Plano pedagógico');if(!temDoc(r,'avaliacao','temAvaliacao'))p.push('Avaliação / satisfação');return p}
 function alertas(r){return arr(r&&r.alertas)}
 function statusClasse(r){var s=String(r&&r.status||'').toLowerCase();if(/cancelad|execução parcial/.test(s))return'bEr';if(alertas(r).length)return'bAl';if(pendencias(r).length)return'bIn';if(/auditoria|validar|pend/.test(s))return'bAn';return'bCo'}
 function cardClasse(r){if(/cancelad|execução parcial/i.test(r.status||''))return'st-erro';if(alertas(r).length)return'st-alerta';if(pendencias(r).length)return'st-insuficiente';return'st-ok'}
